@@ -2,14 +2,16 @@
 
 ### ▶ [Start learning now: qibbles.github.io/haru-korean](https://qibbles.github.io/haru-korean/)
 
-A free, self-paced 28-day course that takes you from zero to TOPIK I level Korean in small daily lessons. It runs entirely in your browser. No install, no sign-up, no server.
+A free, self-paced 27-day course that takes you from zero to TOPIK I level Korean in small daily lessons. It runs entirely in your browser. No install, no sign-up, no server.
 
 I built it for my own Korean study, using Claude as a coding partner. One lesson a day, with a short review of old words before each new one.
 
 ## What's inside
 
-- **28 daily lessons**, starting with Hangul (vowels, consonants, bottom letters) and moving through greetings, numbers, time, verbs, particles, shopping, food, past and future tense, family and polite speech, directions, weather, reasons and suggestions.
+- **27 daily lessons plus a mock quiz**, starting with Hangul (vowels, consonants, bottom letters) and moving through greetings, numbers, time, verbs, particles, shopping, food, past and future tense, family and polite speech, directions, weather, reasons and suggestions.
 - **Spaced-repetition review**: words and phrases come back as cards. Mark each one "Got it" or "Forgot", and the ones you forget come back sooner.
+- **Memory hooks**: every word comes with a memorable hook, plus a Mandarin link where Korean borrowed the word from Chinese.
+- **Lazy mode** for low-energy days: just the most useful words and phrases, a short check and a few reviews.
 - **Test out**: already know a topic? Take the check and skip the day.
 - **TOPIK I exam guide**: what the paper looks like and which days cover which parts of the exam.
 - **Mock quizzes** in TOPIK I style, as many times as you like.
