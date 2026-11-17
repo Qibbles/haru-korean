@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>하루 한국어 TOPIK I Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: one calm column, like a study notebook. Teal (청록) for action, dancheong red for stamps and warnings. */
+:root{
+  --bg:#EEF2F1; --surface:#FFFFFF; --ink:#16211F; --muted:#5B6B68; --line:#D5DEDC;
+  --accent:#1D6B66; --accent-soft:#DCEDEA; --stamp:#B8392E; --stamp-soft:#F6E3E0; --gold:#A87914;
+  --ok:#2F7D4A; --ok-soft:#E1F1E6;
+  --font-display:"Gowun Batang","Noto Serif KR",Georgia,serif;
+  --font-body:"IBM Plex Sans","Noto Sans KR",system-ui,sans-serif;
+  --font-ko:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1615; --surface:#18211F; --ink:#E6EEEC; --muted:#93A5A1; --line:#2A3735;
+  --accent:#5BB8AF; --accent-soft:#1D3431; --stamp:#E57A6E; --stamp-soft:#3A2220; --gold:#D9AE4E;
+  --ok:#6CC28B; --ok-soft:#1C3325; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0F1615; --surface:#18211F; --ink:#E6EEEC; --muted:#93A5A1; --line:#2A3735;
+  --accent:#5BB8AF; --accent-soft:#1D3431; --stamp:#E57A6E; --stamp-soft:#3A2220; --gold:#D9AE4E;
+  --ok:#6CC28B; --ok-soft:#1C3325; color-scheme:dark;}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.55}
+.ko{font-family:var(--font-ko)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 64px;display:flex;flex-direction:column;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
+.brand h1{font-family:var(--font-display);font-size:2rem;margin:0;line-height:1.1;text-wrap:balance}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:.9rem}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:.85rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.chip b{color:var(--accent)}
+nav{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;overflow-x:auto}
+nav button{flex:1;background:none;border:0;border-radius:8px;padding:8px 10px;font-weight:500;color:var(--muted);white-space:nowrap}
+nav button[aria-current="true"]{background:var(--accent-soft);color:var(--accent)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card h2{font-family:var(--font-display);font-size:1.45rem;margin:0 0 4px;text-wrap:balance}
+.card h3{margin:0 0 8px;font-size:1rem}
+.eyebrow{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 4px}
+.muted{color:var(--muted)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 16px;font-weight:500}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+:root[data-theme="dark"] .btn.primary{color:#0F1615}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.primary{color:#0F1615}}
+.btn.ghost{background:none;border-color:transparent;color:var(--muted);padding-inline:8px}
+.btn.ghost:hover{color:var(--ink)}
+.btn.small{padding:5px 10px;font-size:.85rem}
+.bar{height:8px;background:var(--accent-soft);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px}
+.pill{display:inline-block;font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--line);color:var(--muted)}
+.pill.done{background:var(--ok-soft);color:var(--ok)}
+.pill.skip{background:var(--stamp-soft);color:var(--stamp)}
+.pill.test{background:var(--accent-soft);color:var(--accent)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.stat{font-size:2rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.toggle{display:flex;align-items:center;gap:10px}
+.toggle input{width:20px;height:20px;accent-color:var(--accent)}
+/* course list */
+.stage{display:flex;flex-direction:column;gap:6px}
+.stage h3{margin:12px 0 4px;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.dayrow{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.dayrow .num{font-family:var(--font-display);font-size:1.3rem;text-align:center;color:var(--accent);font-variant-numeric:tabular-nums}
+.dayrow.isdone .num{color:var(--ok)}
+.dayrow .t{font-weight:500}
+.dayrow .s{font-size:.85rem;color:var(--muted)}
+.dayrow .acts{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+@media (max-width:480px){.dayrow{grid-template-columns:36px 1fr}.dayrow .acts{grid-column:1/-1;justify-content:flex-start}}
+/* lesson */
+.steps{display:flex;gap:6px;flex-wrap:wrap}
+.step{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:.85rem;color:var(--muted)}
+.step[aria-current="true"]{border-color:var(--accent);color:var(--accent);font-weight:600}
+.step.fin{color:var(--ok)}
+.step.fin::before{content:"✓ "}
+.words{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.word{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:4px;position:relative}
+.word.known{opacity:.55}
+.word .big{font-family:var(--font-display);font-size:2rem;line-height:1.15;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.word .rom{color:var(--muted);font-size:.9rem}
+.word .en{font-weight:600}
+.word .hook{font-size:.88rem;background:var(--accent-soft);border-radius:8px;padding:6px 8px}
+.word .zh{font-size:.8rem;color:var(--gold);font-weight:600}
+.word .foot{display:flex;justify-content:flex-end;margin-top:auto}
+.say{border:1px solid var(--line);background:var(--surface);border-radius:999px;width:32px;height:32px;display:inline-grid;place-items:center;flex:none;padding:0}
+.say svg{width:16px;height:16px;fill:var(--accent)}
+.say.hidden{display:none}
+.phrase{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.phrase:last-child{border-bottom:0}
+.phrase .k{font-family:var(--font-ko);font-size:1.2rem;font-weight:500}
+.phrase .r{color:var(--muted);font-size:.88rem}
+.phrase .e{font-size:.95rem}
+.formula{font-family:var(--font-ko);font-size:1.1rem;background:var(--accent-soft);border-left:4px solid var(--accent);padding:12px 14px;border-radius:8px;margin:12px 0;overflow-x:auto}
+.prose{max-width:65ch}
+/* quiz */
+.q{font-size:1.15rem;font-weight:500;margin:8px 0 14px}
+.q .ko{font-size:2rem;font-family:var(--font-display);display:block;margin-top:6px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:12px 14px;font-size:1rem}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--stamp);background:var(--stamp-soft)}
+.feedback{margin-top:12px;font-size:.95rem}
+/* flashcard */
+.flash{min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;cursor:pointer;border:1px dashed var(--line);border-radius:14px;padding:20px}
+.flash .big{font-family:var(--font-display);font-size:2.6rem;line-height:1.2}
+.flash .hook{background:var(--accent-soft);border-radius:8px;padding:6px 10px;font-size:.9rem;max-width:44ch}
+.stamp{display:inline-block;border:2px solid var(--stamp);color:var(--stamp);border-radius:6px;padding:2px 8px;font-weight:700;transform:rotate(-3deg);font-size:.85rem}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);font-size:.92rem}
+th{color:var(--muted);font-weight:600}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:1}
+.sync{font-size:.78rem;color:var(--muted)}
+a{color:var(--accent)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1 class="ko">하루 한국어</h1>
+      <p>TOPIK I in small daily bites · <span class="sync" id="sync">progress saved on this device</span></p>
+    </div>
+    <div class="chips" id="chips"></div>
+  </header>
+  <nav id="nav" aria-label="Sections">
+    <button data-go="home">Today</button>
+    <button data-go="course">All days</button>
+    <button data-go="review">Review</button>
+    <button data-go="exam">The exam</button>
+  </nav>
+  <main id="app"></main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ============ COURSE DATA ============
+   words:   [korean, romanisation, english, memory hook, chinese cognate?]
+   phrases: [korean, romanisation, english]
+   pattern: {name, formula, explain, ex:[[ko,rom,en]], q:[[prompt, correct, wrong, wrong]]}
+*/
+const STAGES=[
+  {name:"Stage 1 · Reading Hangul",from:1,to:4},
+  {name:"Stage 2 · Survival Korean (TOPIK Level 1 core)",from:5,to:10},
+  {name:"Stage 3 · Making sentences",from:11,to:19},
+  {name:"Stage 4 · Daily life (TOPIK Level 2)",from:20,to:26},
+  {name:"Stage 5 · Exam day",from:27,to:27}
+];
+const DAYS=[
+{n:1,kind:"hangul",title:"Vowels, part 1",goal:"Read the 8 basic vowel shapes.",min:8,
+words:[
+["ㅏ","a","a (as in father)","A stick with an arm pointing right: \"Ah, over there!\""],
+["ㅓ","eo","eo (as in son)","Arm points left, back where you came from: \"uh, go back\""],
+["ㅗ","o","o (as in go)","Arm points up at the sky: \"Oh! Look up!\""],
+["ㅜ","u","u (as in moon)","Arm points down at the ground: \"Ooh, I dropped it\""],
+["ㅡ","eu","eu (flat oo, lips spread)","A flat line means flat lips. Say oo while smiling"],
+["ㅣ","i","i (as in see)","A standing stick, like the letter i"],
+["ㅐ","ae","ae (bed, mouth wider)","ㅏ and ㅣ glued together"],
+["ㅔ","e","e (as in bed)","ㅓ and ㅣ glued together. Sounds the same as ㅐ today, so relax"]],
+phrases:[["아이","a-i","child"],["오이","o-i","cucumber"],["이","i","two / tooth"]],
+pattern:{name:"Building a syllable block",formula:"consonant + vowel   →   ㅇ + ㅏ = 아",
+explain:"Korean letters are stacked into blocks, one block per syllable. Every block must start with a consonant. When a syllable starts with a vowel sound, write the silent placeholder ㅇ first.",
+ex:[["아","a","the sound a, as a block"],["오","o","the sound o, as a block"],["이","i","the sound i, as a block"]],
+q:[["Which letter makes the \"oh\" sound?","ㅗ","ㅜ","ㅓ"],["How do you write the syllable \"a\" on its own?","아","ㅏ","어"],["Which way does the arm on ㅜ (oo) point?","Down","Up","Right"]]}},
+
+{n:2,kind:"hangul",title:"Vowels, part 2",goal:"Add a stroke, get a Y. Glue two vowels, get a W.",min:8,
+words:[
+["ㅑ","ya","ya (as in yard)","ㅏ with a second arm. Extra stroke = add a y"],
+["ㅕ","yeo","yeo (as in young)","ㅓ plus an extra stroke = y + eo"],
+["ㅛ","yo","yo (as in yoga)","ㅗ with two legs up: \"Yo!\""],
+["ㅠ","yu","yu (as in you)","ㅜ with two legs down: \"you\""],
+["ㅘ","wa","wa (as in wow)","ㅗ + ㅏ: o and a slide into wa"],
+["ㅝ","wo","wo (as in won)","ㅜ + ㅓ: u and eo slide into wo"],
+["ㅚ","oe","we (as in wet)","ㅗ + ㅣ, but just say we"],
+["ㅢ","ui","ui (eu + ee, fast)","ㅡ + ㅣ. Say eu-ee quickly"]],
+phrases:[["우유","u-yu","milk"],["여우","yeo-u","fox"],["와!","wa","wow!"],["아야!","a-ya","ouch!"],["예","ye","yes (polite)"]],
+pattern:{name:"Double stroke = Y sound",formula:"ㅏ→ㅑ    ㅓ→ㅕ    ㅗ→ㅛ    ㅜ→ㅠ",
+explain:"You do not need to memorise new letters. Take a vowel you already know and add one more short stroke: it gets a y in front. Two vowels stuck together slide into a w sound.",
+ex:[["야","ya","ya"],["요","yo","yo (also the polite ending you will hear everywhere)"],["와","wa","wa"]],
+q:[["ㅗ + one extra stroke = ?","ㅛ (yo)","ㅠ (yu)","ㅘ (wa)"],["우유 means…","milk","fox","ouch"],["ㅗ + ㅏ combine into…","ㅘ (wa)","ㅝ (wo)","ㅢ (ui)"]]}},
+
+{n:3,kind:"hangul",title:"Consonants, part 1",goal:"Learn the 10 basic consonants and start reading real words.",min:10,
+words:[
+["ㄱ","g / k","g (between g and k)","Looks like a gun: G for Gun"],
+["ㄴ","n","n","An L lying down, taking a Nap"],
+["ㄷ","d / t","d (between d and t)","A Door frame, open on the right"],
+["ㄹ","r / l","r / l (light flap)","A zigzag Road. r at the start, l at the end"],
+["ㅁ","m","m","A square Mouth: M for Mouth"],
+["ㅂ","b / p","b (between b and p)","A Bucket with two handles"],
+["ㅅ","s","s","A Ski slope, or a tent: S"],
+["ㅇ","– / ng","silent at start, ng at end","A zero: nothing at the start, ng (as in sing) at the end"],
+["ㅈ","j","j","ㅅ with a lid on top. A Jogger mid-stride"],
+["ㅎ","h","h","A person wearing a Hat: H"]],
+phrases:[["나","na","I / me (casual)"],["바다","ba-da","sea"],["나무","na-mu","tree"],["사자","sa-ja","lion"],["하마","ha-ma","hippo"],["머리","meo-ri","head / hair"]],
+pattern:{name:"Side by side, or stacked",formula:"tall vowel → side by side (가)    flat vowel → stacked (고)",
+explain:"Tall vowels (ㅏ ㅓ ㅣ and their Y versions) sit to the right of the consonant. Flat vowels (ㅗ ㅜ ㅡ) sit underneath. That is the whole layout rule.",
+ex:[["가","ga","ㄱ + ㅏ side by side"],["고","go","ㄱ + ㅗ stacked"],["누","nu","ㄴ + ㅜ stacked"]],
+q:[["ㅁ + ㅏ = ?","마","모","머"],["나무 means…","tree","sea","lion"],["Which letter is silent at the start of a block?","ㅇ","ㅎ","ㄴ"]]}},
+
+{n:4,kind:"hangul",title:"Consonants, part 2 + bottom letters",goal:"Finish the alphabet. After today you can read any Korean word.",min:10,
+words:[
+["ㅋ","k","k (strong puff of air)","ㄱ plus an extra stroke = extra air"],
+["ㅌ","t","t (strong puff)","ㄷ plus an extra stroke = extra air"],
+["ㅍ","p","p (strong puff)","Looks like a picnic table: P for Picnic"],
+["ㅊ","ch","ch (strong puff)","ㅈ with a little chef's hat: CH for CHef"],
+["ㄲ","kk","kk (tight, no air)","Doubled = tense. Like the k in skate"],
+["ㄸ","tt","tt (tight, no air)","Like the t in stop"],
+["ㅃ","pp","pp (tight, no air)","Like the p in spy"],
+["ㅆ","ss","ss (sharp s)","Two skis hissing down the slope: ss"],
+["ㅉ","jj","jj (tight j)","A j said with a tense throat"]],
+phrases:[["커피","keo-pi","coffee"],["김치","gim-chi","kimchi"],["빵","ppang","bread"],["한국","han-guk","Korea"],["사랑","sa-rang","love"],["책","chaek","book"]],
+pattern:{name:"The bottom letter (받침, batchim)",formula:"consonant + vowel + consonant   →   ㅂ + ㅏ + ㅂ = 밥",
+explain:"A consonant can sit at the bottom of a block to close the syllable. Good news for lazy brains: a bottom letter only ever makes one of 7 sounds, k, n, t, l, m, p, ng. So ㅅ ㅈ ㅊ ㅌ ㅎ at the bottom all just sound like t.",
+ex:[["밥","bap","rice / meal"],["집","jip","house"],["물","mul","water"],["옷","ot","clothes (ㅅ at the bottom sounds like t)"]],
+q:[["옷 (clothes) ends with which sound?","t","s","ng"],["ㅋ ㅌ ㅍ ㅊ are said with…","an extra puff of air","no sound","a nasal hum"],["빵 means…","bread","coffee","love"]]}},
+
+{n:5,title:"Hello, thanks, sorry",goal:"The 10 words you will say every single day in Korea.",min:10,
+words:[
+["안녕하세요","an-nyeong-ha-se-yo","hello","Literally \"are you at peace?\" Sounds like: \"On young? Hey, say yo!\""],
+["감사합니다","gam-sa-ham-ni-da","thank you (formal)","Gamsa = gratitude, hamnida = I do","感谢 gǎnxiè"],
+["고마워요","go-ma-wo-yo","thanks (polite, friendly)","\"Go, mow your lawn. Thanks!\""],
+["죄송합니다","joe-song-ham-ni-da","I'm very sorry (formal)","\"Sorry, my way-song was off-key\""],
+["미안해요","mi-an-hae-yo","sorry (polite)","\"Me, uh, my bad, yo\""],
+["네","ne","yes","Sounds like nay but means YES. Classic trap"],
+["아니요","a-ni-yo","no","\"Ah, nee-yo\" = ah, no"],
+["안녕히 가세요","an-nyeong-hi ga-se-yo","goodbye (to someone leaving)","가 = go. You say it to the person who is GOing"],
+["안녕히 계세요","an-nyeong-hi gye-se-yo","goodbye (you leave, they stay)","계 = stay. You leave, they stay"],
+["괜찮아요","gwaen-cha-na-yo","it's okay / I'm fine","\"Gwen, chill, yo\""]],
+phrases:[["처음 뵙겠습니다","cheo-eum boep-ge-sseum-ni-da","nice to meet you (formal)"],["만나서 반가워요","man-na-seo ban-ga-wo-yo","nice to meet you"],["잘 지냈어요?","jal ji-nae-sseo-yo","how have you been?"],["잘 먹겠습니다","jal meok-ge-sseum-ni-da","said before eating (thanks for the meal)"]],
+pattern:{name:"Polite -요 vs formal -ㅂ니다",formula:"…요 = everyday polite        …ㅂ니다 / 습니다 = formal",
+explain:"Korean changes the verb ending depending on who you are talking to. Use -요 with strangers, shop staff and colleagues; it is always safe. -ㅂ니다 is extra formal (news, speeches, announcements). It is all over the TOPIK reading paper, so learn to recognise it even if you rarely say it.",
+ex:[["고마워요","go-ma-wo-yo","thanks (polite)"],["감사합니다","gam-sa-ham-ni-da","thank you (formal)"],["괜찮습니다","gwaen-chan-sseum-ni-da","it is fine (formal)"]],
+q:[["Which ending is the formal one?","-ㅂ니다","-요","-아"],["You are walking out of a shop. You say…","안녕히 계세요","안녕히 가세요","잘 먹겠습니다"],["네 means…","yes","no","hello"]]}},
+
+{n:6,title:"Introducing yourself",goal:"Say who you are, where you're from and what you do.",min:10,
+words:[
+["저","jeo","I / me (polite)","Humble \"me\". Do a tiny bow when you say it"],
+["이름","i-reum","name","\"Ee-room\": your name is on your room door"],
+["사람","sa-ram","person","A person RAMming through a crowd"],
+["나라","na-ra","country","NARnia is a country"],
+["한국","han-guk","Korea","Han + guk (country)","韩国 hánguó"],
+["싱가포르","sing-ga-po-reu","Singapore","Just \"Singapore\" spelled in Hangul"],
+["학생","hak-saeng","student","Almost the same as Mandarin","学生 xuéshēng"],
+["회사원","hoe-sa-won","office worker","회사 company + 원 member"],
+["선생님","seon-saeng-nim","teacher","先生 + 님 (an honour ending)","先生 xiānsheng"],
+["친구","chin-gu","friend","A friend you clink glasses with: chin-chin!"]],
+phrases:[["이름이 뭐예요?","i-reu-mi mwo-ye-yo","what's your name?"],["저는 싱가포르 사람이에요","jeo-neun sing-ga-po-reu sa-ra-mi-e-yo","I'm Singaporean"],["어느 나라 사람이에요?","eo-neu na-ra sa-ra-mi-e-yo","where are you from?"],["직업이 뭐예요?","ji-geo-bi mwo-ye-yo","what do you do (for work)?"]],
+pattern:{name:"A는 B이에요 = A is B",formula:"저 + 는  …  회사원 + 이에요   →   저는 회사원이에요",
+explain:"This one sentence carries you through day one. 은/는 marks the topic (\"as for me\"). 이에요/예요 means \"is\". Lazy rule for both: after a bottom consonant use the longer one (은, 이에요); after a vowel use the shorter one (는, 예요).",
+ex:[["저는 회사원이에요","jeo-neun hoe-sa-wo-ni-e-yo","I'm an office worker"],["저는 민수예요","jeo-neun min-su-ye-yo","I'm Minsu"],["제 이름은 지아예요","je i-reu-meun ji-a-ye-yo","my name is Jia"]],
+q:[["저는 학생___ (I'm a student)","이에요","예요","는"],["저___ 친구예요 (I'm a friend)","는","은","이"],["학생 means…","student","teacher","office worker"]]}},
+
+{n:7,title:"This, that, have, don't have",goal:"Point at things and ask if they have it.",min:10,
+words:[
+["이거","i-geo","this (thing)","이 = this. Point at your own hand"],
+["그거","geu-geo","that (near you)","그 = that, near the listener"],
+["저거","jeo-geo","that (over there)","저 = far away. Point across the room"],
+["뭐","mwo","what","\"Mwo?\" sounds like a confused cow"],
+["있어요","i-sseo-yo","there is / I have","\"It's here, yo\""],
+["없어요","eop-sseo-yo","there isn't / I don't have","\"Oops, so, no\""],
+["물","mul","water","\"Mool\": a mule needs water"],
+["가방","ga-bang","bag","Your bag goes BANG when you drop it"],
+["휴대폰","hyu-dae-pon","mobile phone","Ends in \"phone\""],
+["시간","si-gan","time","Close to Mandarin","时间 shíjiān"]],
+phrases:[["이거 뭐예요?","i-geo mwo-ye-yo","what is this?"],["이거 있어요?","i-geo i-sseo-yo","do you have this?"],["시간 있어요?","si-gan i-sseo-yo","do you have time?"],["잠깐만요","jam-kkan-man-nyo","just a moment / excuse me (to pass)"]],
+pattern:{name:"Something 이/가 있어요 = there is / I have",formula:"시간 + 이 + 있어요   →   시간이 있어요",
+explain:"이/가 marks the subject. Same lazy rule: after a consonant use 이, after a vowel use 가. 있어요 = have / there is. 없어요 = don't have / there isn't. Make it a question just by raising your voice at the end.",
+ex:[["시간이 있어요","si-ga-ni i-sseo-yo","I have time"],["가방이 없어요","ga-bang-i eop-sseo-yo","I don't have a bag"],["물 있어요?","mul i-sseo-yo","do you have water?"]],
+q:[["\"I don't have time\" is…","시간이 없어요","시간이 있어요","시간이에요"],["가방___ 있어요","이","가","는"],["저거 means…","that, over there","this","what"]]}},
+
+{n:8,title:"Numbers 1: the Chinese-style set",goal:"Prices, phone numbers, dates. Easy if you know Mandarin.",min:10,
+words:[
+["일","il","one","Mandarin 一","一 yī"],["이","i","two","Mandarin 二","二 èr"],["삼","sam","three","Mandarin 三","三 sān"],["사","sa","four","Mandarin 四, also unlucky in Korea","四 sì"],["오","o","five","Mandarin 五","五 wǔ"],
+["육","yuk","six","Mandarin 六","六 liù"],["칠","chil","seven","Mandarin 七","七 qī"],["팔","pal","eight","Mandarin 八","八 bā"],["구","gu","nine","Mandarin 九","九 jiǔ"],["십","sip","ten","Mandarin 十","十 shí"],
+["백","baek","hundred","Mandarin 百","百 bǎi"],["천","cheon","thousand","Mandarin 千","千 qiān"],["만","man","ten thousand","Mandarin 万. Korea counts money in 만s","万 wàn"],["원","won","won (Korean money)","₩. 만 원 = ₩10,000"]],
+phrases:[["얼마예요?","eol-ma-ye-yo","how much is it?"],["오천 원이에요","o-cheon wo-ni-e-yo","it's 5,000 won"],["전화번호가 뭐예요?","jeon-hwa-beon-ho-ga mwo-ye-yo","what's your phone number?"]],
+pattern:{name:"Building big numbers",formula:"2 × 10 + 5   →   이 + 십 + 오 = 이십오 (25)",
+explain:"Exactly like Mandarin: say the digit, then the place. 35 = 삼십오. Big money uses 만 (10,000), so 15,000 won = 만 오천 원. You don't say 일 before 십, 백, 천 or 만. Zero in phone numbers is 공.",
+ex:[["삼십오","sam-si-bo","35"],["만 오천 원","man o-cheon won","15,000 won"],["공일공","gong-il-gong","010 (start of Korean mobile numbers)"]],
+q:[["How do you say 47?","사십칠","칠십사","사칠"],["만 원 is…","10,000 won","1,000 won","100,000 won"],["팔 is…","eight","six","four"]]}},
+
+{n:9,title:"Numbers 2: the native set + counters",goal:"Count things, people and your age.",min:10,
+words:[
+["하나","ha-na","one","HANd = 1. Becomes 한 before a counter"],["둘","dul","two","DUaL = 2. Becomes 두"],["셋","set","three","A SET of 3. Becomes 세"],["넷","net","four","A NET has 4 corners. Becomes 네"],["다섯","da-seot","five","\"Da-sut\": DA five fingers"],
+["여섯","yeo-seot","six","\"Yeo-sut\": rhymes with 다섯, one more"],["일곱","il-gop","seven","\"Ill gob\": 7 days of feeling ill"],["여덟","yeo-deol","eight","\"Yo, doll\" with 8 arms"],["아홉","a-hop","nine","\"A hop\" on cloud nine"],["열","yeol","ten","\"Yeol!\" yelling at 10"],
+["개","gae","counter for things","\"Gae\" = generic thing counter"],["명","myeong","counter for people","How many people? 몇 명?"],["살","sal","years old","Age counter: 스물 살 = 20 years old"]],
+phrases:[["몇 명이세요?","myeot myeong-i-se-yo","how many people? (at a restaurant)"],["두 명이요","du myeong-i-yo","two people"],["몇 살이에요?","myeot sa-ri-e-yo","how old are you?"],["이거 하나 주세요","i-geo ha-na ju-se-yo","one of these, please"]],
+pattern:{name:"Native number + counter",formula:"하나 → 한 개 (1 thing)    둘 → 두 명 (2 people)",
+explain:"Use these numbers for counting objects, people, age and hours. Put the counter after the number. Four numbers shrink before a counter: 하나→한, 둘→두, 셋→세, 넷→네. 20 is 스물 (shrinks to 스무).",
+ex:[["사과 한 개","sa-gwa han gae","one apple"],["세 명이에요","se myeong-i-e-yo","we're three people"],["스물다섯 살","seu-mul-da-seot sal","25 years old"]],
+q:[["\"Two people\" is…","두 명","둘 명","이 명"],["Which numbers do you use for age?","Native (하나, 둘…)","Chinese-style (일, 이…)","Either, no difference"],["다섯 is…","five","four","six"]]}},
+
+{n:10,title:"Time and days",goal:"Tell the time and make plans for tomorrow.",min:10,
+words:[
+["지금","ji-geum","now","\"Gee, gum, now!\""],["오늘","o-neul","today","\"Oh, null plans today\""],["내일","nae-il","tomorrow","\"Nail it tomorrow\""],["어제","eo-je","yesterday","\"Uh, jeez, yesterday was rough\""],
+["아침","a-chim","morning / breakfast","\"A-cheem\": a sneeze in the morning"],["점심","jeom-sim","lunch / midday","Close to Mandarin 点心 (dim sum)","点心 diǎnxīn"],["저녁","jeo-nyeok","evening / dinner","\"Jeo-nyuk\": New York dinner"],
+["주말","ju-mal","weekend","Mandarin 周末","周末 zhōumò"],["시","si","o'clock","Native number + 시: 세 시 = 3 o'clock"],["분","bun","minute","Mandarin 分","分 fēn"],["요일","yo-il","day of the week","월화수목금토일 = 月火水木金土日 + 요일"]],
+phrases:[["지금 몇 시예요?","ji-geum myeot si-ye-yo","what time is it now?"],["두 시 반이에요","du si ba-ni-e-yo","it's half past two"],["오늘 무슨 요일이에요?","o-neul mu-seun yo-i-ri-e-yo","what day is it today?"],["내일 봐요","nae-il bwa-yo","see you tomorrow"]],
+pattern:{name:"Time + 에 = at / on",formula:"세 시 + 에 + 만나요   →   세 시에 만나요 (meet at 3)",
+explain:"Add 에 after a time to say when. Hours use native numbers, minutes use Chinese-style numbers: 2:30 = 두 시 삼십 분, or simply 두 시 반 (half). No 에 after 오늘, 내일, 어제, 지금.",
+ex:[["세 시에 만나요","se si-e man-na-yo","let's meet at 3"],["월요일에 일해요","wo-ryo-i-re il-hae-yo","I work on Monday"],["내일 봐요","nae-il bwa-yo","see you tomorrow (no 에)"]],
+q:[["2:30 is…","두 시 반","이 시 반","둘 시 삼십"],["\"On Monday\" is…","월요일에","월요일이","월요일는"],["어제 means…","yesterday","tomorrow","today"]]}},
+
+{n:11,title:"Your first verbs",goal:"Go, come, eat, drink, see, do. One rule conjugates them all.",min:12,
+words:[
+["가다","ga-da","to go","\"Ga!\" = go!"],["오다","o-da","to come","\"Oh, da, come here\""],["먹다","meok-da","to eat","\"Muk\": munching"],["마시다","ma-si-da","to drink","\"Ma, see the drink?\""],["보다","bo-da","to see / watch","\"Bo\" = BOok, see it"],
+["하다","ha-da","to do","The most useful verb. 공부하다 = study-do"],["자다","ja-da","to sleep","\"Jaaa…\" a big yawn"],["일하다","il-ha-da","to work","일 (work) + 하다"],["공부하다","gong-bu-ha-da","to study","Mandarin 工夫 (effort)","工夫 gōngfu"],["좋다","jo-ta","to be good","\"Jo-ta!\" thumbs up"]],
+phrases:[["뭐 해요?","mwo hae-yo","what are you doing?"],["같이 가요","ga-chi ga-yo","let's go together"],["좋아요!","jo-a-yo","sounds good! / I like it"],["피곤해요","pi-gon-hae-yo","I'm tired"]],
+pattern:{name:"Present tense: -아요 / -어요",formula:"drop 다 → last vowel ㅏ or ㅗ? add 아요. Otherwise add 어요. 하다 → 해요",
+explain:"Every verb ends in 다 in the dictionary. Chop it off to get the stem. If the stem's last vowel is ㅏ or ㅗ, add 아요; for everything else add 어요. Any verb with 하다 becomes 해요. Vowels squash together when they meet: 가+아요 = 가요, 보+아요 = 봐요, 마시+어요 = 마셔요.",
+ex:[["먹어요","meo-geo-yo","I eat (먹 + 어요)"],["가요","ga-yo","I go (가 + 아요 squashed)"],["공부해요","gong-bu-hae-yo","I study (하다 → 해요)"]],
+q:[["먹다 in present tense:","먹어요","먹아요","먹해요"],["하다 becomes…","해요","하어요","하요"],["보다 (see) becomes…","봐요","보어요","바요"]]}},
+
+{n:12,title:"Sentence order + particles",goal:"Make full sentences: I drink coffee.",min:12,
+words:[
+["커피","keo-pi","coffee","It's just coffee"],["밥","bap","rice / meal","Also means \"a meal\" in general"],["책","chaek","book","\"Check\" the book"],["영화","yeong-hwa","movie","\"Young hwa\": movies for young people"],["음악","eu-mak","music","Mandarin 音乐","音乐 yīnyuè"],
+["한국어","han-gu-geo","Korean language","한국 + 어 (language)"],["영어","yeong-eo","English language","영 (England) + 어"],["사과","sa-gwa","apple / apology","Same word for apple and apology. Say sorry with an apple"],["빵","ppang","bread","From Portuguese pão"],["우유","u-yu","milk","\"Oo-you, milk?\""]],
+phrases:[["한국어를 공부해요","han-gu-geo-reul gong-bu-hae-yo","I study Korean"],["천천히 말해 주세요","cheon-cheon-hi mal-hae ju-se-yo","please speak slowly"],["다시 한번 말해 주세요","da-si han-beon mal-hae ju-se-yo","please say that again"],["영어 할 수 있어요?","yeong-eo hal su i-sseo-yo","can you speak English?"]],
+pattern:{name:"Subject, object, verb LAST",formula:"저는 + 커피를 + 마셔요   →   I + coffee + drink",
+explain:"The verb always goes at the end. The object gets 을 (after a consonant) or 를 (after a vowel). Lazy recipe for 80% of sentences: 저는 + thing을/를 + verb. Particles do the grammar, so word order is flexible as long as the verb stays last.",
+ex:[["저는 커피를 마셔요","jeo-neun keo-pi-reul ma-syeo-yo","I drink coffee"],["친구가 책을 읽어요","chin-gu-ga chae-geul il-geo-yo","my friend reads a book"],["영화를 봐요","yeong-hwa-reul bwa-yo","I watch a movie"]],
+q:[["Where does the verb go?","At the end","At the start","After the subject"],["책___ 읽어요","을","를","이"],["커피___ 마셔요","를","을","가"]]}},
+
+{n:13,title:"Places: going and doing",goal:"Say where you're going and what you do there.",min:10,
+words:[
+["집","jip","home / house","\"Zip\" home"],["학교","hak-gyo","school","Mandarin 学校","学校 xuéxiào"],["회사","hoe-sa","company / office","회사원 = office worker"],["식당","sik-dang","restaurant","Mandarin 食堂 (canteen)","食堂 shítáng"],["카페","ka-pe","café","Just café"],
+["병원","byeong-won","hospital","病 (sick) + 院","病院"],["은행","eun-haeng","bank","Mandarin 银行","银行 yínháng"],["마트","ma-teu","supermarket","From \"mart\""],["화장실","hwa-jang-sil","toilet","Literally \"make-up room\""],["도서관","do-seo-gwan","library","Mandarin 图书馆","图书馆 túshūguǎn"]],
+phrases:[["화장실이 어디예요?","hwa-jang-si-ri eo-di-ye-yo","where is the toilet?"],["어디 가요?","eo-di ga-yo","where are you going?"],["집에 가요","ji-be ga-yo","I'm going home"],["여기요!","yeo-gi-yo","excuse me! (calling staff)"]],
+pattern:{name:"에 = to, 에서 = at (doing)",formula:"회사에 가요 (go TO the office)    회사에서 일해요 (work AT the office)",
+explain:"Use 에 with movement verbs (go, come) and with 있어요. Use 에서 for where an action happens. Memory trick: 에서 is longer because something is happening there.",
+ex:[["집에 가요","ji-be ga-yo","I go home"],["카페에서 커피를 마셔요","ka-pe-e-seo keo-pi-reul ma-syeo-yo","I drink coffee at a café"],["도서관에서 공부해요","do-seo-gwa-ne-seo gong-bu-hae-yo","I study at the library"]],
+q:[["\"I study AT school\" =","학교에서 공부해요","학교에 공부해요","학교를 공부해요"],["\"I go TO the bank\" =","은행에 가요","은행에서 가요","은행이 가요"],["화장실 is…","toilet","library","hospital"]]}},
+
+{n:14,title:"Where is it?",goal:"Ask and understand where things are.",min:10,
+words:[
+["여기","yeo-gi","here","\"Yo, here!\""],["거기","geo-gi","there (near you)","Same 이/그/저 pattern as 이거/그거/저거"],["저기","jeo-gi","over there","저 = far"],["어디","eo-di","where","\"Uh, D? Where's D?\""],["위","wi","on top / above","\"Wee!\" flying above"],
+["아래","a-rae","below","\"A ray\" shining down"],["앞","ap","in front","\"App\" on the screen in front of you"],["뒤","dwi","behind","\"Dwee\": someone behind you"],["옆","yeop","next to","\"Yup, right next to you\""],["안","an","inside","\"On the inside\""]],
+phrases:[["어디에 있어요?","eo-di-e i-sseo-yo","where is it?"],["저기 있어요","jeo-gi i-sseo-yo","it's over there"],["이 근처에 편의점 있어요?","i geun-cheo-e pyeo-nui-jeom i-sseo-yo","is there a convenience store near here?"],["쭉 가세요","jjuk ga-se-yo","go straight ahead"]],
+pattern:{name:"Thing + position + 에 있어요",formula:"은행 + 옆 + 에 있어요   →   은행 옆에 있어요 (it's next to the bank)",
+explain:"Korean says the landmark first, then the position word, then 에 있어요. English: next to the bank. Korean: bank next-to at is.",
+ex:[["은행 옆에 있어요","eun-haeng yeo-pe i-sseo-yo","it's next to the bank"],["가방 안에 있어요","ga-bang a-ne i-sseo-yo","it's inside the bag"],["집 앞에 카페가 있어요","jip a-pe ka-pe-ga i-sseo-yo","there's a café in front of my house"]],
+q:[["\"On the table\" =","책상 위에","위에 책상","책상 아래에"],["뒤 means…","behind","in front","next to"],["어디 means…","where","here","what"]]}},
+
+{n:15,title:"Shopping",goal:"Buy things, ask for a discount, pay by card.",min:10,
+words:[
+["사다","sa-da","to buy","\"Sa-da\": buy a soda"],["팔다","pal-da","to sell","Your PAL sells it to you"],["비싸다","bi-ssa-da","to be expensive","\"Bee-ssa!\" a sting to your wallet"],["싸다","ssa-da","to be cheap","비싸 minus 비 = cheap"],["주다","ju-da","to give","주세요 = please give me"],
+["옷","ot","clothes","\"Oat\" coloured clothes"],["신발","sin-bal","shoes","\"Sin-ball\": shoes for the ball"],["크다","keu-da","to be big","\"Ku-da\" sounds bulky"],["작다","jak-da","to be small","\"Jack\" the small one"],["카드","ka-deu","card (credit card)","Just card"]],
+phrases:[["너무 비싸요","neo-mu bi-ssa-yo","it's too expensive"],["카드 돼요?","ka-deu dwae-yo","can I pay by card?"],["봉투 필요하세요?","bong-tu pi-ryo-ha-se-yo","do you need a bag?"],["그냥 구경하는 거예요","geu-nyang gu-gyeong-ha-neun geo-ye-yo","I'm just looking"]],
+pattern:{name:"Please: 주세요 and -(으)세요",formula:"thing + 주세요 (please give)    verb + 아/어 주세요 (please do for me)",
+explain:"이거 주세요 (this please) is the most useful shopping sentence alive. To politely ask someone to do something, add -(으)세요 to the stem: 가세요 (please go), 앉으세요 (please sit). For a favour, use -아/어 주세요: 깎아 주세요 (please give me a discount).",
+ex:[["이거 주세요","i-geo ju-se-yo","this one, please"],["좀 깎아 주세요","jom kka-kka ju-se-yo","a small discount, please"],["여기 앉으세요","yeo-gi an-jeu-se-yo","please sit here"]],
+q:[["\"This one, please\" =","이거 주세요","이거 있어요","이거 뭐예요"],["싸다 means…","to be cheap","to be expensive","to buy"],["Asking for a discount:","깎아 주세요","비싸 주세요","사 주세요"]]}},
+
+{n:16,title:"Food and wanting",goal:"Order food and say what you want to do.",min:10,
+words:[
+["음식","eum-sik","food","Mandarin 饮食 (food and drink)","饮食 yǐnshí"],["고기","go-gi","meat","\"Go, gi, get the meat\" (Korean BBQ = 고기)"],["생선","saeng-seon","fish (as food)","\"Sang, son, fish!\""],["야채","ya-chae","vegetables","\"Ya, chae\": eat your veg"],["맛있다","ma-sit-da","to be delicious","맛 (taste) + 있다 (have) = has taste"],
+["맛없다","ma-deop-da","to taste bad","맛 + 없다 = no taste"],["맵다","maep-da","to be spicy","\"Map\": spicy map of your mouth. 매워요"],["메뉴","me-nyu","menu","Just menu"],["배고프다","bae-go-peu-da","to be hungry","배 (stomach) + 고프다 (empty). 배고파요"],["시키다","si-ki-da","to order (food)","\"See, kee, da\": order what you see"]],
+phrases:[["메뉴 주세요","me-nyu ju-se-yo","the menu, please"],["안 맵게 해 주세요","an maep-ge hae ju-se-yo","not spicy, please"],["맛있어요!","ma-si-sseo-yo","delicious!"],["계산해 주세요","gye-san-hae ju-se-yo","the bill, please"]],
+pattern:{name:"-고 싶어요 = I want to",formula:"먹다 → 먹 + 고 싶어요   →   먹고 싶어요 (I want to eat)",
+explain:"Chop 다 off any verb and add 고 싶어요. No vowel rules, no exceptions. This might be the laziest useful grammar in Korean.",
+ex:[["김치찌개를 먹고 싶어요","gim-chi-jji-gae-reul meok-go si-peo-yo","I want to eat kimchi stew"],["한국에 가고 싶어요","han-gu-ge ga-go si-peo-yo","I want to go to Korea"],["쉬고 싶어요","swi-go si-peo-yo","I want to rest"]],
+q:[["\"I want to drink\" =","마시고 싶어요","마셔 싶어요","마시 싶어요"],["맛있어요 means…","it's delicious","it's spicy","it's tasteless"],["To ask for the bill:","계산해 주세요","메뉴 주세요","맵게 해 주세요"]]}},
+
+{n:17,title:"Past tense",goal:"Talk about what you did.",min:12,
+words:[
+["지난주","ji-nan-ju","last week","지난 (passed) + 주 (week)"],["작년","jang-nyeon","last year","Pronounced jang-nyeon"],["아까","a-kka","a moment ago","\"A car\" just drove past a moment ago"],["벌써","beol-sseo","already","\"Bull, so soon? Already!\""],["아직","a-jik","not yet / still","\"A jig\": still dancing, not done yet"],
+["만나다","man-na-da","to meet","\"Man, nah, da\": meet a man"],["읽다","ik-da","to read","Pronounced ik-da. 읽어요"],["듣다","deut-da","to listen","Irregular: 들어요"],["쉬다","swi-da","to rest","\"Swee\": a sigh of rest"],["끝나다","kkeun-na-da","to finish / end","끝 = end"]],
+phrases:[["밥 먹었어요?","bap meo-geo-sseo-yo","have you eaten? (a common hello)"],["잘 잤어요?","jal ja-sseo-yo","did you sleep well?"],["알겠어요","al-ge-sseo-yo","got it / understood"],["몰랐어요","mol-la-sseo-yo","I didn't know"]],
+pattern:{name:"Past: -았어요 / -었어요",formula:"same ㅏ/ㅗ rule as present, add ㅆ:  가요 → 갔어요   먹어요 → 먹었어요   해요 → 했어요",
+explain:"If you know the present form, you know the past. Take the present form, drop 요, add ㅆ어요. 가요 → 갔어요, 봐요 → 봤어요, 마셔요 → 마셨어요, 해요 → 했어요.",
+ex:[["어제 친구를 만났어요","eo-je chin-gu-reul man-na-sseo-yo","I met a friend yesterday"],["영화를 봤어요","yeong-hwa-reul bwa-sseo-yo","I watched a movie"],["수업이 끝났어요","su-eo-bi kkeun-na-sseo-yo","class finished"]],
+q:[["먹다 in the past:","먹었어요","먹았어요","먹했어요"],["공부하다 in the past:","공부했어요","공부하었어요","공부해요"],["아직 means…","not yet / still","already","a moment ago"]]}},
+
+{n:18,title:"Future and plans",goal:"Say what you will do this weekend.",min:10,
+words:[
+["다음 주","da-eum ju","next week","다음 = next"],["내년","nae-nyeon","next year","내 (coming) + 년 (year)"],["계획","gye-hoek","plan","Mandarin 计划","计划 jìhuà"],["여행","yeo-haeng","travel / trip","Mandarin 旅行","旅行 lǚxíng"],["같이","ga-chi","together","\"Gotcha, together\""],
+["혼자","hon-ja","alone","\"Hon, ya alone?\""],["약속","yak-sok","appointment / promise","Mandarin 约束","约束 yuēshù"],["생일","saeng-il","birthday","Mandarin 生日","生日 shēngrì"],["언제","eon-je","when","\"On… jeez, when?\""],["파티","pa-ti","party","Just party"]],
+phrases:[["주말 잘 보내세요","ju-mal jal bo-nae-se-yo","have a good weekend"],["생일 축하해요","saeng-il chu-ka-hae-yo","happy birthday"],["시간 괜찮아요?","si-gan gwaen-cha-na-yo","are you free?"],["다음에 봐요","da-eu-me bwa-yo","see you next time"]],
+pattern:{name:"-(으)ㄹ 거예요 = will / going to",formula:"가다 → 가 + ㄹ 거예요 = 갈 거예요    먹다 → 먹 + 을 거예요 = 먹을 거예요",
+explain:"Stem ends in a vowel: glue ㄹ underneath and add 거예요. Stem ends in a consonant: add 을 거예요. That's all.",
+ex:[["주말에 뭐 할 거예요?","ju-ma-re mwo hal geo-ye-yo","what will you do this weekend?"],["부산에 갈 거예요","bu-sa-ne gal geo-ye-yo","I'm going to go to Busan"],["친구를 만날 거예요","chin-gu-reul man-nal geo-ye-yo","I'll meet a friend"]],
+q:[["\"I will eat\" =","먹을 거예요","먹ㄹ 거예요","먹었어요"],["\"I will go\" =","갈 거예요","가을 거예요","가요"],["약속 means…","appointment / promise","plan","birthday"]]}},
+
+{n:19,title:"Saying no: 안 and 못",goal:"Don't, can't, I don't know.",min:10,
+words:[
+["안","an","not (don't)","\"An\" = ain't"],["못","mot","cannot","\"Mot\": I'm MOTless, can't do it"],["알다","al-da","to know","\"Al knows\". 알아요"],["모르다","mo-reu-da","to not know","\"More? Duh, don't know\". 몰라요"],["싫다","sil-ta","to dislike","\"Sil-ta\": silly, I hate it"],
+["바쁘다","ba-ppeu-da","to be busy","\"Ba-ppa\": busy dad (papa). 바빠요"],["피곤하다","pi-gon-ha-da","to be tired","\"Pee, gone\": too tired"],["어렵다","eo-ryeop-da","to be difficult","어려워요"],["쉽다","swip-da","to be easy","\"Swipe\" = easy. 쉬워요"],["수영","su-yeong","swimming","水泳 (water + swim)","水泳"]],
+phrases:[["잘 모르겠어요","jal mo-reu-ge-sseo-yo","I'm not sure"],["아니에요","a-ni-e-yo","no, not at all (also: \"you're welcome\")"],["안 돼요","an dwae-yo","no / not allowed"],["별로예요","byeol-lo-ye-yo","it's not great"]],
+pattern:{name:"안 = don't, 못 = can't",formula:"안 + 먹어요 = I don't eat     못 + 먹어요 = I can't eat",
+explain:"Put 안 or 못 right before the verb. For 하다 verbs, slip it in before 하다: 공부 안 해요. TOPIK reading also uses the long form -지 않아요, which means the same as 안: 먹지 않아요 = 안 먹어요.",
+ex:[["고기를 안 먹어요","go-gi-reul an meo-geo-yo","I don't eat meat"],["수영을 못 해요","su-yeong-eul mo tae-yo","I can't swim"],["운동 안 해요","un-dong an hae-yo","I don't exercise"]],
+q:[["\"I can't swim\" =","수영을 못 해요","수영을 안 해요","수영 해요"],["\"I don't study\" =","공부 안 해요","안 공부해요","공부 못 해요"],["먹지 않아요 means the same as…","안 먹어요","못 먹어요","먹어요"]]}},
+
+{n:20,title:"Family + polite talk about elders",goal:"Talk about your family respectfully.",min:10,
+words:[
+["가족","ga-jok","family","Mandarin 家族","家族 jiāzú"],["아버지","a-beo-ji","father","Casual: 아빠 (papa)"],["어머니","eo-meo-ni","mother","Casual: 엄마 (mama)"],["형","hyeong","older brother (said by a male)","K-drama favourite: \"hyung!\""],["오빠","o-ppa","older brother (said by a female)","Also what K-pop fans shout"],
+["누나","nu-na","older sister (said by a male)","\"Noona\""],["언니","eon-ni","older sister (said by a female)","\"Unnie\""],["동생","dong-saeng","younger sibling","Same word for younger brother or sister"],["남편","nam-pyeon","husband","남 = male"],["아내","a-nae","wife","\"A nae\": my wife"]],
+phrases:[["가족이 몇 명이에요?","ga-jo-gi myeot myeong-i-e-yo","how many people in your family?"],["형제가 있어요?","hyeong-je-ga i-sseo-yo","do you have siblings?"],["결혼했어요?","gyeol-hon-hae-sseo-yo","are you married?"],["많이 드세요","ma-ni deu-se-yo","please eat a lot (to a guest)"]],
+pattern:{name:"Honorific -(으)세요 for elders",formula:"아버지가 가요 → 아버지가 가세요 (respectful)",
+explain:"When the subject is someone senior (parents, boss, customers), add -(으)세요 to the verb. A few verbs swap to special words: 있어요 → 계세요, 먹어요 → 드세요, 자요 → 주무세요. TOPIK loves these.",
+ex:[["어머니는 집에 계세요","eo-meo-ni-neun ji-be gye-se-yo","my mother is at home"],["할머니가 주무세요","hal-meo-ni-ga ju-mu-se-yo","grandma is sleeping"],["아버지는 선생님이세요","a-beo-ji-neun seon-saeng-ni-mi-se-yo","my father is a teacher"]],
+q:[["Respectful form of 먹어요:","드세요","먹세요","주무세요"],["A man calls his older sister…","누나","언니","오빠"],["Respectful form of 있어요 (to be somewhere):","계세요","있으세요","가세요"]]}},
+
+{n:21,title:"Getting around",goal:"Take the subway, a taxi, and find your way.",min:10,
+words:[
+["버스","beo-seu","bus","Just bus"],["지하철","ji-ha-cheol","subway","Mandarin 地下铁","地下铁 dìxiàtiě"],["택시","taek-si","taxi","Just taxi"],["기차","gi-cha","train","False friend: 汽车 means car in Mandarin, but train in Korean","汽车 (≠ car!)"],["역","yeok","station","서울역 = Seoul Station"],
+["타다","ta-da","to ride / take","\"Ta-da!\" you're on the bus. 버스를 타요"],["내리다","nae-ri-da","to get off","\"Nae, ree\": get off here"],["갈아타다","ga-ra-ta-da","to transfer","갈다 (change) + 타다 (ride)"],["걸어서","geo-reo-seo","on foot","From 걷다 (walk)"],["왼쪽","oen-jjok","left","\"When? Jjok!\" turn left"],["오른쪽","o-reun-jjok","right","오른 = right side"]],
+phrases:[["여기서 세워 주세요","yeo-gi-seo se-wo ju-se-yo","please stop here (taxi)"],["명동역까지 가 주세요","myeong-dong-yeok-kka-ji ga ju-se-yo","to Myeongdong Station, please"],["얼마나 걸려요?","eol-ma-na geol-lyeo-yo","how long does it take?"],["몇 번 버스 타요?","myeot beon beo-seu ta-yo","which bus number do I take?"]],
+pattern:{name:"(으)로 = by / towards",formula:"지하철 + 로 = by subway     오른쪽 + 으로 = to the right",
+explain:"Add 로 after a vowel or ㄹ, 으로 after other consonants. It means \"by\" (transport) or \"towards\" (direction). Also remember: you 타요 a vehicle with 을/를: 버스를 타요.",
+ex:[["지하철로 회사에 가요","ji-ha-cheol-lo hoe-sa-e ga-yo","I go to work by subway"],["오른쪽으로 가세요","o-reun-jjo-geu-ro ga-se-yo","go to the right"],["다음 역에서 내리세요","da-eum yeo-ge-seo nae-ri-se-yo","get off at the next station"]],
+q:[["\"By bus\" =","버스로","버스으로","버스에"],["기차 means…","train","car","subway"],["\"Get off at the next station\" uses…","내리세요","타세요","갈아타세요"]]}},
+
+{n:22,title:"Weather and seasons",goal:"Small talk about the weather (a TOPIK favourite).",min:10,
+words:[
+["날씨","nal-ssi","weather","\"Nal-see\": see the weather"],["봄","bom","spring","\"Bom!\" flowers pop"],["여름","yeo-reum","summer","\"Yo, room's hot\""],["가을","ga-eul","autumn","\"Go, owl\": autumn owls"],["겨울","gyeo-ul","winter","\"Gyeo-ool\": cool wool for winter"],
+["덥다","deop-da","to be hot (weather)","더워요. Singapore every day"],["춥다","chup-da","to be cold","추워요"],["비","bi","rain","\"Bee\": rain drops like bees"],["눈","nun","snow (also eye)","Snow gets in your eye"],["바람","ba-ram","wind","\"Ba-ram\": wind rams you"],["따뜻하다","tta-tteu-ta-da","to be warm","따뜻해요"],["시원하다","si-won-ha-da","to be cool / refreshing","Also said after a hot soup: refreshing!"]],
+phrases:[["날씨가 좋네요","nal-ssi-ga jon-ne-yo","nice weather, isn't it?"],["우산 있어요?","u-san i-sseo-yo","do you have an umbrella?"],["싱가포르는 항상 더워요","sing-ga-po-reu-neun hang-sang deo-wo-yo","Singapore is always hot"],["감기 조심하세요","gam-gi jo-sim-ha-se-yo","take care not to catch a cold"]],
+pattern:{name:"The ㅂ rule + 비가 와요",formula:"덥다 → 더워요    춥다 → 추워요    맵다 → 매워요",
+explain:"Many describing words end in ㅂ다. Drop the ㅂ and add 워요. Also, rain and snow \"come\" in Korean: 비가 와요 (it's raining), 눈이 와요 (it's snowing).",
+ex:[["오늘 날씨가 더워요","o-neul nal-ssi-ga deo-wo-yo","it's hot today"],["비가 와요","bi-ga wa-yo","it's raining"],["겨울은 너무 추워요","gyeo-u-reun neo-mu chu-wo-yo","winter is too cold"]],
+q:[["춥다 becomes…","추워요","춥어요","추아요"],["\"It's snowing\" =","눈이 와요","눈이 해요","눈이 있어요"],["가을 is…","autumn","spring","winter"]]}},
+
+{n:23,title:"Hobbies and likes",goal:"Say what you enjoy doing.",min:10,
+words:[
+["취미","chwi-mi","hobby","Mandarin 趣味","趣味 qùwèi"],["좋아하다","jo-a-ha-da","to like","좋아 (good) + 하다. 좋아해요"],["싫어하다","si-reo-ha-da","to dislike","싫어해요"],["운동","un-dong","exercise / sport","Mandarin 运动","运动 yùndòng"],["노래","no-rae","song","\"No ray\" of hope when I sing"],
+["요리","yo-ri","cooking","Mandarin 料理","料理 liàolǐ"],["사진","sa-jin","photo","사진을 찍다 = take a photo"],["게임","ge-im","game","Just game"],["축구","chuk-gu","football (soccer)","\"Chuck\" the ball"],["쇼핑","syo-ping","shopping","Just shopping"],["재미있다","jae-mi-it-da","to be fun","재미 (fun) + 있다 (have)"]],
+phrases:[["취미가 뭐예요?","chwi-mi-ga mwo-ye-yo","what's your hobby?"],["저도요","jeo-do-yo","me too"],["정말요?","jeong-mal-lyo","really?"],["재미있어요","jae-mi-i-sseo-yo","it's fun"]],
+pattern:{name:"Turning verbs into nouns: -는 것",formula:"요리하다 → 요리하는 것을 좋아해요 (I like cooking)",
+explain:"To like doing something, add -는 것 to the stem: 보는 것 (watching), 먹는 것 (eating). Then treat it like a noun with 을. Also: 하고 joins nouns (A하고 B = A and B), and -고 joins verbs (운동하고 쉬어요 = I exercise and rest).",
+ex:[["영화 보는 것을 좋아해요","yeong-hwa bo-neun geo-seul jo-a-hae-yo","I like watching movies"],["축구하고 수영을 좋아해요","chuk-gu-ha-go su-yeong-eul jo-a-hae-yo","I like football and swimming"],["주말에 운동하고 쉬어요","ju-ma-re un-dong-ha-go swi-eo-yo","on weekends I exercise and rest"]],
+q:[["\"I like eating\" =","먹는 것을 좋아해요","먹어 좋아해요","먹고 좋아해요"],["저도요 means…","me too","really?","it's fun"],["Which joins two nouns?","하고","-고","-는 것"]]}},
+
+{n:24,title:"Because, but, so",goal:"Link two ideas into one sentence.",min:12,
+words:[
+["그리고","geu-ri-go","and (then)","Starts a new sentence: and…"],["그래서","geu-rae-seo","so / therefore","\"Grey, so\": so it's grey"],["하지만","ha-ji-man","but / however","\"Ha, gee, man, but…\""],["그런데","geu-reon-de","but / by the way","Softer but; also changes the topic"],["왜","wae","why","\"Why\" said with a Korean accent"],
+["정말","jeong-mal","really","정말요? = really?"],["너무","neo-mu","too / very","너무 좋아요 = so good"],["조금","jo-geum","a little","Often shortened to 좀"],["많이","ma-ni","a lot","\"Many\""],["때문에","ttae-mu-ne","because of","Noun + 때문에: 비 때문에 = because of rain"]],
+phrases:[["왜요?","wae-yo","why?"],["그렇군요","geu-reo-ku-nyo","I see"],["좀 바빠요","jom ba-ppa-yo","I'm a bit busy"],["그래서요?","geu-rae-seo-yo","and so? / so what happened?"]],
+pattern:{name:"-아서/어서 = because   -지만 = but",formula:"배고프다 → 배고파서 밥을 먹어요     비싸다 → 비싸지만 맛있어요",
+explain:"-아서/어서 follows the same ㅏ/ㅗ rule as the present tense: drop 요 from the present form and add 서 (배고파요 → 배고파서). Never put past tense before it. -지만 just glues onto the stem: 비싸지만 (expensive, but…).",
+ex:[["피곤해서 일찍 잤어요","pi-gon-hae-seo il-jjik ja-sseo-yo","I was tired so I slept early"],["바빠서 못 가요","ba-ppa-seo mot ga-yo","I'm busy so I can't go"],["한국어는 어렵지만 재미있어요","han-gu-geo-neun eo-ryeop-ji-man jae-mi-i-sseo-yo","Korean is hard but fun"]],
+q:[["\"Because I'm hungry\" =","배고파서","배고프지만","배고팠어서"],["\"Cheap but tasty\" =","싸지만 맛있어요","싸서 맛있어요","싸면 맛있어요"],["왜 means…","why","so","really"]]}},
+
+{n:25,title:"Health + making suggestions",goal:"Say what hurts. Suggest doing something together.",min:10,
+words:[
+["아프다","a-peu-da","to hurt / be sick","\"Ah, poo\": I feel sick. 아파요"],["머리","meo-ri","head","머리가 아파요 = headache"],["배","bae","stomach (also pear, boat)","배가 아파요 = stomach ache"],["목","mok","throat / neck","\"Mok\": choked throat"],["약","yak","medicine","Mandarin 药","药 yào"],
+["약국","yak-guk","pharmacy","药局 (medicine office)","药局"],["감기","gam-gi","a cold","감기에 걸리다 = catch a cold"],["열","yeol","fever (also ten)","\"Yeol\": yelling hot"],["의사","ui-sa","doctor","Mandarin 医师","医师 yīshī"],["전화하다","jeon-hwa-ha-da","to phone","Mandarin 电话","电话 diànhuà"]],
+phrases:[["머리가 아파요","meo-ri-ga a-pa-yo","I have a headache"],["감기에 걸렸어요","gam-gi-e geol-lyeo-sseo-yo","I caught a cold"],["약 먹었어요?","yak meo-geo-sseo-yo","did you take medicine?"],["빨리 나으세요","ppal-li na-eu-se-yo","get well soon"]],
+pattern:{name:"-(으)ㄹ까요? = Shall we…?",formula:"먹다 → 먹을까요? (shall we eat?)    가다 → 갈까요? (shall we go?)",
+explain:"Same glue as the future: vowel stem gets ㄹ까요, consonant stem gets 을까요. Use it to suggest or to ask \"should I…?\". Reply with 좋아요 (sounds good) or 네, 같이 가요 (yes, let's go).",
+ex:[["같이 점심 먹을까요?","ga-chi jeom-sim meo-geul-kka-yo","shall we have lunch together?"],["병원에 갈까요?","byeong-wo-ne gal-kka-yo","should we go to the hospital?"],["내일 전화할까요?","nae-il jeon-hwa-hal-kka-yo","shall I call you tomorrow?"]],
+q:[["\"Shall we go?\" =","갈까요?","가을까요?","갔어요?"],["약국 is…","pharmacy","hospital","medicine"],["\"I have a stomach ache\" =","배가 아파요","머리가 아파요","목이 아파요"]]}},
+
+{n:26,title:"Can, may, must not",goal:"Ask permission and understand signs and rules.",min:12,
+words:[
+["운전","un-jeon","driving","운전하다 = to drive"],["찍다","jjik-da","to take (a photo)","\"Jjik\": the camera click"],["담배","dam-bae","cigarette","\"Damn, bae, stop smoking\""],["피우다","pi-u-da","to smoke","담배를 피우다"],["들어가다","deu-reo-ga-da","to go in","들어 (in) + 가다 (go)"],
+["나가다","na-ga-da","to go out","나 (out) + 가다"],["앉다","an-da","to sit","\"On da chair\". 앉으세요 = please sit"],["열다","yeol-da","to open","열어요"],["닫다","dat-da","to close","닫아요"],["기다리다","gi-da-ri-da","to wait","\"Gee, da, ree\": waiting"],["돕다","dop-da","to help","도와주세요 = help me"]],
+phrases:[["도와주세요!","do-wa-ju-se-yo","help!"],["들어가도 돼요?","deu-reo-ga-do dwae-yo","may I go in?"],["할 수 있어요!","hal su i-sseo-yo","you can do it!"],["기다려 주세요","gi-da-ryeo ju-se-yo","please wait"]],
+pattern:{name:"Can · may · must not",formula:"-(으)ㄹ 수 있어요 = can     -아도/어도 돼요 = may     -(으)면 안 돼요 = must not",
+explain:"Can: 할 수 있어요 (vowel stem + ㄹ 수 있어요; consonant stem + 을 수 있어요). May: present form minus 요, plus 도 돼요 (찍어요 → 찍어도 돼요?). Must not: stem + (으)면 안 돼요. Signs and TOPIK reading are full of these.",
+ex:[["한국어를 조금 할 수 있어요","han-gu-geo-reul jo-geum hal su i-sseo-yo","I can speak a little Korean"],["여기서 사진을 찍어도 돼요?","yeo-gi-seo sa-ji-neul jji-geo-do dwae-yo","may I take photos here?"],["여기서 담배를 피우면 안 돼요","yeo-gi-seo dam-bae-reul pi-u-myeon an dwae-yo","you must not smoke here"]],
+q:[["\"May I sit?\" =","앉아도 돼요?","앉을 수 있어요","앉으면 안 돼요"],["-(으)면 안 돼요 means…","must not","can","may"],["\"I can drive\" =","운전할 수 있어요","운전해도 돼요","운전하면 안 돼요"]]}},
+
+{n:27,title:"TOPIK instructions + formal style",goal:"Read the exam's own instructions instantly so no time is wasted.",min:10,
+words:[
+["다음","da-eum","the following / next","Every question starts with 다음"],["무엇","mu-eot","what (formal)","Formal 뭐"],["고르다","go-reu-da","to choose","고르십시오 = choose (formal command)"],["알맞다","al-mat-da","to be suitable / correct","알맞은 것 = the suitable one"],["같다","gat-da","to be the same","내용과 같은 것 = the one matching the text"],
+["내용","nae-yong","content","Mandarin 内容","内容 nèiróng"],["중심","jung-sim","main / centre","Mandarin 中心","中心 zhōngxīn"],["생각","saeng-gak","thought / idea","중심 생각 = main idea"],["순서","sun-seo","order / sequence","Mandarin 顺序","顺序 shùnxù"],["빈칸","bin-kan","blank space","빈 (empty) + 칸 (box)"]],
+phrases:[["다음은 무엇에 대한 이야기입니까?","da-eu-meun mu-eo-se dae-han i-ya-gi-im-ni-kka","what is the following about?"],["알맞은 것을 고르십시오","al-ma-jeun geo-seul go-reu-sip-si-o","choose the correct answer"],["다음을 읽고 물음에 답하십시오","da-eu-meul il-kko mu-reu-me da-pa-sip-si-o","read the following and answer the questions"],["내용과 같은 것을 고르십시오","nae-yong-gwa ga-teun geo-seul go-reu-sip-si-o","choose what matches the content"]],
+pattern:{name:"Formal style: -ㅂ니다 / -습니다",formula:"vowel stem + ㅂ니다 (갑니다)    consonant stem + 습니다 (먹습니다)    question: -ㅂ니까 / -습니까?",
+explain:"TOPIK reading passages and instructions use this formal style. You rarely need to speak it, but recognise it fast: 갑니다 = 가요, 먹습니다 = 먹어요, 학생입니다 = 학생이에요.",
+ex:[["저는 학생입니다","jeo-neun hak-saeng-im-ni-da","I am a student"],["날씨가 좋습니다","nal-ssi-ga jo-sseum-ni-da","the weather is good"],["어디에 갑니까?","eo-di-e gam-ni-kka","where are you going?"]],
+q:[["먹습니다 = ?","먹어요","먹을 거예요","먹었어요"],["고르십시오 means…","choose","read","answer"],["중심 생각 is…","main idea","order","blank"]]}}
+];
+const TOTAL=DAYS.length;
+
+/* ============ STATE ============ */
+const KEY="haru-hangugeo-v1";
+const INTERVALS=[0,1,2,4,8,16,32]; // days until next review per box; box 7 = known forever
+const fmt=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const today=()=>fmt(new Date());
+const addDays=(s,n)=>{const d=new Date(s+"T00:00:00");d.setDate(d.getDate()+n);return fmt(d)};
+function blank(){return {days:{},secs:{},cards:{},streak:{count:0,last:null},lazy:false,updated:0}}
+let S=blank();
+try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(blank(),JSON.parse(raw))}catch(e){}
+
+let db=null,uid=null,saveTimer=null,writing=false,pending=false;
+function save(){
+  S.updated=Date.now();
+  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
+  if(db&&uid){clearTimeout(saveTimer);saveTimer=setTimeout(pushRemote,1200)}
+  renderChips();
+}
+async function pushRemote(){
+  if(writing){pending=true;return}
+  writing=true;
+  try{await db.doc("data/users/"+uid+"/korean").set({json:JSON.stringify(S),updated:S.updated});setSync("synced to your account")}
+  catch(e){setSync("saved on this device only")}
+  writing=false;
+  if(pending){pending=false;pushRemote()}
+}
+function setSync(t){document.getElementById("sync").textContent="progress "+t}
+(async()=>{
+  try{
+    if(!window.claude||!window.claude.use)return;
+    const [d,u]=await Promise.all([claude.use("db"),claude.use("user")]);
+    if(!d||!u)return;
+    const id=await u.id(); if(!id)return;
+    db=d;uid=id;
+    const snap=await db.doc("data/users/"+uid+"/korean").get();
+    if(snap.exists){
+      const body=snap.data();
+      if(body&&body.json&&(body.updated||0)>(S.updated||0)){S=Object.assign(blank(),JSON.parse(body.json));try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){};render()}
+      else if((S.updated||0)>(body.updated||0))pushRemote();
+    } else if(S.updated) pushRemote();
+    setSync("synced to your account");
+  }catch(e){}
+})();
+
+/* ============ SPEECH ============ */
+let tts=null;
+(async()=>{try{if(window.claude&&claude.use)tts=await claude.use("tts")}catch(e){}})();
+async function speak(text){
+  if(tts){try{await tts.speak(text,{language:"ko",rate:0.85});return}catch(e){if(e&&e.code==="busy")return}}
+  try{
+    if(!("speechSynthesis" in window))throw 0;
+    const u=new SpeechSynthesisUtterance(text);u.lang="ko-KR";u.rate=0.8;
+    const v=speechSynthesis.getVoices().find(v=>/^ko/i.test(v.lang));if(v)u.voice=v;
+    speechSynthesis.cancel();speechSynthesis.speak(u);
+  }catch(e){toast("No Korean voice available on this device")}
+}
+const SPK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const sayBtn=t=>/[가-힣]/.test(t)?`<button class="say" data-say="${esc(t)}" aria-label="Play ${esc(t)}">${SPK}</button>`:"";
+
+/* ============ HELPERS ============ */
+function toast(t){const el=document.getElementById("toast");el.textContent=t;el.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove("on"),2200)}
+const dayById=n=>DAYS.find(d=>d.n===n);
+const dayStatus=n=>S.days[n]||null; // "done" | "skipped" | "tested"
+const isFinished=n=>!!S.days[n];
+function nextDay(){return DAYS.find(d=>!isFinished(d.n))||null}
+function allCards(day){return day.words.map((w,i)=>({id:day.n+"-w"+i,ko:w[0],rom:w[1],en:w[2],hook:w[3],zh:w[4]})).concat(day.phrases.map((p,i)=>({id:day.n+"-p"+i,ko:p[0],rom:p[1],en:p[2]})))}
+function cardById(id){const [n,k]=id.split("-");const d=dayById(+n);if(!d)return null;const i=+k.slice(1);
+  if(k[0]==="w"){const w=d.words[i];return w&&{id,ko:w[0],rom:w[1],en:w[2],hook:w[3],zh:w[4],day:d.n}}
+  const p=d.phrases[i];return p&&{id,ko:p[0],rom:p[1],en:p[2],day:d.n}}
+const lazyWords=d=>S.lazy?d.words.slice(0,5):d.words;
+const lazyPhrases=d=>S.lazy?d.phrases.slice(0,2):d.phrases;
+function dueCards(){const t=today();return Object.entries(S.cards).filter(([id,c])=>c.box<7&&c.due<=t&&cardById(id)).sort((a,b)=>a[1].due<b[1].due?-1:1).map(([id])=>id)}
+function cap(){return S.lazy?10:20}
+function addCards(day,box){
+  const t=today();
+  allCards(day).forEach(c=>{
+    if(S.lazy&&!lazyWords(day).some(w=>w[0]===c.ko)&&!lazyPhrases(day).some(p=>p[0]===c.ko))return;
+    if(S.cards[c.id]&&S.cards[c.id].box===7)return;
+    S.cards[c.id]={box,due:addDays(t,INTERVALS[box]||1)};
+  });
+}
+function markStudied(){
+  const t=today();if(S.streak.last===t)return;
+  S.streak.count=(S.streak.last===addDays(t,-1))?S.streak.count+1:1;S.streak.last=t;
+}
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+
+/* ============ QUIZ BUILDER ============ */
+function wordQuestions(days,count){
+  const pool=[];days.forEach(d=>d.words.forEach(w=>pool.push({ko:w[0],rom:w[1],en:w[2],kind:d.kind||"word"})));
+  const picked=shuffle(pool).slice(0,count);
+  return picked.map(w=>{
+    const same=pool.filter(p=>p.kind===w.kind&&p.en!==w.en&&p.ko!==w.ko);
+    const others=shuffle(same.length>=3?same:pool.filter(p=>p.en!==w.en&&p.ko!==w.ko));
+    const rev=w.kind!=="hangul"&&Math.random()<.4;
+    const seen=new Set([rev?w.ko:w.en]);const wrong=[];
+    for(const o of others){const v=rev?o.ko:o.en;if(!seen.has(v)){seen.add(v);wrong.push(v)}if(wrong.length===3)break}
+    return rev
+      ?{prompt:`How do you say “${w.en}”?`,big:"",correct:w.ko,opts:shuffle([w.ko,...wrong]),speak:w.ko}
+      :{prompt:"What does this mean?",big:w.ko,correct:w.en,opts:shuffle([w.en,...wrong]),speak:w.ko};
+  });
+}
+function patternQuestions(days,count){
+  const q=[];days.forEach(d=>d.pattern.q.forEach(x=>q.push({prompt:x[0],big:"",correct:x[1],opts:shuffle(x.slice(1))})));
+  return shuffle(q).slice(0,count);
+}
+
+/* ============ VIEWS ============ */
+let view={name:"home"};
+function go(v){view=v;render();window.scrollTo({top:0})}
+function renderChips(){
+  const done=DAYS.filter(d=>isFinished(d.n)).length;
+  document.getElementById("chips").innerHTML=
+    (()=>{const k=S.streak.last&&S.streak.last>=addDays(today(),-1)?S.streak.count:0;return `<span class="chip">Streak <b>${k}</b> day${k===1?"":"s"}</span>`})()+
+    `<span class="chip">Due <b>${Math.min(dueCards().length,cap())}</b> cards</span>`+
+    `<span class="chip"><b>${done}</b>/${TOTAL} days</span>`;
+}
+function render(){
+  renderChips();
+  const tab=view.name==="day"||view.name==="quiz"?(view.from||"course"):view.name;
+  document.querySelectorAll("#nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.go===tab?"true":"false"));
+  const app=document.getElementById("app");
+  app.innerHTML=({home:vHome,course:vCourse,day:vDay,review:vReview,exam:vExam,quiz:vQuiz})[view.name]();
+  if(!tts&&!("speechSynthesis" in window))app.querySelectorAll(".say").forEach(b=>b.classList.add("hidden"));
+}
+
+function vHome(){
+  const d=nextDay();const due=dueCards().length;const done=DAYS.filter(x=>isFinished(x.n)).length;
+  const pct=Math.round(done/TOTAL*100);
+  const lesson=d?`
+    <section class="card">
+      <p class="eyebrow">Today's lesson · Day ${d.n} of ${TOTAL} · about ${S.lazy?Math.ceil(d.min/2):d.min} min</p>
+      <h2>${esc(d.title)}</h2>
+      <p class="muted prose">${esc(d.goal)}</p>
+      <div class="row" style="margin-top:12px">
+        <button class="btn primary" data-act="open" data-n="${d.n}">Start Day ${d.n}</button>
+        <button class="btn" data-act="testout" data-n="${d.n}">Test out (8 questions)</button>
+        <button class="btn ghost" data-act="skip" data-n="${d.n}">I already know this, skip</button>
+      </div>
+    </section>`:`
+    <section class="card"><p class="eyebrow">Course complete</p><h2>All ${TOTAL} days done</h2>
+    <p class="muted">Keep your reviews going and take a mock quiz in “The exam”. That is what moves you from Level 1 to Level 2.</p>
+    <div class="row"><button class="btn primary" data-act="mock">Take a mock quiz</button></div></section>`;
+  return `${due?`<section class="card" style="border-color:var(--accent)"><p class="eyebrow">Do this first · 2 minutes</p>
+      <h2>${Math.min(due,cap())} cards to review</h2><p class="muted prose">Forgetting is normal. These are words you learned before, timed to come back right before you would lose them.</p>
+      <div class="row" style="margin-top:12px"><button class="btn primary" data-act="review">Review now</button></div></section>`:""}
+    ${lesson}
+    <div class="grid2">
+      <section class="card">
+        <p class="eyebrow">Progress to TOPIK I</p>
+        <div class="stat">${pct}%</div>
+        <div class="bar" style="margin:10px 0 6px" aria-hidden="true"><i style="width:${pct}%"></i></div>
+        <p class="muted" style="margin:0;font-size:.9rem">Day 10 covers Level 1 survival basics. Day 26 covers the Level 2 grammar core. Day 27 is the exam's own vocabulary.</p>
+      </section>
+      <section class="card">
+        <p class="eyebrow">Low-energy day?</p>
+        <label class="toggle" for="lazy"><input type="checkbox" id="lazy" ${S.lazy?"checked":""}> <span><b>Lazy mode</b></span></label>
+        <p class="muted" style="margin:8px 0 0;font-size:.9rem">Only the 5 most useful words and 2 phrases per day, a 3-question check, and at most 10 reviews. Half the time, still moving forward.</p>
+      </section>
+    </div>
+    <section class="card">
+      <p class="eyebrow">How this works for a forgetful brain</p>
+      <ul class="prose" style="margin:6px 0 0;padding-left:20px">
+        <li>Every word has a silly memory hook, and a Mandarin link where Korean borrowed from Chinese.</li>
+        <li>Tap the speaker on anything to hear it. Say it out loud once; that alone doubles recall.</li>
+        <li>You never have to re-learn a whole day. Reviews bring back only the words you are about to forget.</li>
+        <li>Know something already? Skip a section, skip a day, or test out of it.</li>
+      </ul>
+    </section>`;
+}
+
+function vCourse(){
+  return STAGES.map(st=>`<div class="stage"><h3>${esc(st.name)}</h3>${
+    DAYS.filter(d=>d.n>=st.from&&d.n<=st.to).map(d=>{
+      const s=dayStatus(d.n);
+      const pill=s==="done"?'<span class="pill done">Done</span>':s==="tested"?'<span class="pill test">Tested out</span>':s==="skipped"?'<span class="pill skip">Skipped</span>':'<span class="pill">New</span>';
+      return `<div class="dayrow ${s?"isdone":""}">
+        <div class="num">${d.n}</div>
+        <div><div class="t">${esc(d.title)} ${pill}</div><div class="s">${esc(d.goal)}</div></div>
+        <div class="acts">
+          <button class="btn small ${s?"":"primary"}" data-act="open" data-n="${d.n}">${s?"Revisit":"Start"}</button>
+          ${s?`<button class="btn small ghost" data-act="reset" data-n="${d.n}">Undo</button>`:`<button class="btn small" data-act="testout" data-n="${d.n}">Test out</button><button class="btn small ghost" data-act="skip" data-n="${d.n}">Skip</button>`}
+        </div></div>`}).join("")
+  }</div>`).join("")+`<p class="muted" style="font-size:.85rem">Skipped days add nothing to your reviews. Test out if you want proof you know it; passing adds the words to review at a longer interval.</p>`;
+}
+
+const SECS=["Words","Phrases","Pattern","Quick check"];
+function vDay(){
+  const d=dayById(view.n);const step=view.step||0;const sd=S.secs[d.n]||{};
+  const tabs=`<div class="steps" role="tablist">${SECS.map((s,i)=>`<button class="step ${sd[i]?"fin":""}" role="tab" aria-current="${i===step}" data-act="step" data-i="${i}">${s}</button>`).join("")}</div>`;
+  let body="";
+  if(step===0){
+    body=`<p class="muted prose">Read each card once, tap the speaker, say it out loud. Don't try to memorise; the reviews will do that. Tap “I know this” on anything you already know and it will never come back.</p>
+    <div class="words">${lazyWords(d).map((w,i)=>{const id=d.n+"-w"+i;const known=S.cards[id]&&S.cards[id].box===7;
+      return `<div class="word ${known?"known":""}">
+        <div class="big ko">${esc(w[0])} ${sayBtn(w[0])}</div>
+        <div class="rom">${esc(w[1])}</div>
+        <div class="en">${esc(w[2])}</div>
+        ${w[3]?`<div class="hook">${esc(w[3])}</div>`:""}
+        ${w[4]?`<div class="zh">漢 ${esc(w[4])}</div>`:""}
+        <div class="foot"><button class="btn small ghost" data-act="known" data-id="${id}">${known?"Undo: show in reviews":"I know this"}</button></div>
+      </div>`}).join("")}</div>`;
+  } else if(step===1){
+    body=`<p class="muted prose">Whole phrases you can use as-is. No grammar needed; just borrow them.</p>
+    <div>${lazyPhrases(d).map(p=>`<div class="phrase"><div><div class="k">${esc(p[0])}</div><div class="r">${esc(p[1])}</div><div class="e">${esc(p[2])}</div></div>${sayBtn(p[0])}</div>`).join("")}</div>`;
+  } else if(step===2){
+    const P=d.pattern;
+    body=`<h3>${esc(P.name)}</h3><div class="formula">${esc(P.formula)}</div><p class="prose">${esc(P.explain)}</p>
+    <div>${P.ex.map(p=>`<div class="phrase"><div><div class="k">${esc(p[0])}</div><div class="r">${esc(p[1])}</div><div class="e">${esc(p[2])}</div></div>${sayBtn(p[0])}</div>`).join("")}</div>`;
+  } else {
+    body=`<p class="prose">${S.lazy?3:6} quick questions on today's words and pattern. Finishing marks the day done and schedules your reviews. Mistakes don't matter.</p>
+    <div class="row"><button class="btn primary" data-act="check" data-n="${d.n}">Start the check</button></div>`;
+  }
+  const last=step===3;
+  return `<section class="card">
+    <div class="row" style="justify-content:space-between"><button class="btn ghost small" data-act="back">← ${view.from==="home"?"Today":"All days"}</button>
+      <button class="btn ghost small" data-act="skip" data-n="${d.n}">Skip whole day</button></div>
+    <p class="eyebrow" style="margin-top:8px">Day ${d.n}</p><h2>${esc(d.title)}</h2>${tabs}</section>
+    <section class="card">${body}</section>
+    ${last?"":`<div class="row" style="justify-content:flex-end">
+      <button class="btn ghost" data-act="skipsec">Skip this section</button>
+      <button class="btn primary" data-act="next">Next: ${SECS[step+1]} →</button></div>`}`;
+}
+
+function startQuiz(qs,meta){view={name:"quiz",qs,i:0,score:0,answered:null,from:view.from||view.name,...meta};render();window.scrollTo({top:0})}
+function vQuiz(){
+  const v=view;
+  if(v.i>=v.qs.length){
+    const pass=v.score>=Math.ceil(v.qs.length*.8);
+    let msg="",acts="";
+    if(v.mode==="lesson"){msg="Day complete. The words are now in your reviews, starting tomorrow.";acts=`<button class="btn primary" data-act="home">Back to today</button>`}
+    else if(v.mode==="testout"){msg=pass?"Passed. Day marked as tested out; its words will pop up occasionally just to check.":"Not quite (you need 80%). Doing the lesson will take about 10 minutes.";
+      acts=pass?`<button class="btn primary" data-act="home">Back to today</button>`:`<button class="btn primary" data-act="open" data-n="${v.n}">Do the lesson</button><button class="btn" data-act="home">Later</button>`}
+    else {msg=`Rough guide: ${Math.round(v.score/v.qs.length*100)}% here. Aim for 70%+ consistently before booking TOPIK I Level 2.`;acts=`<button class="btn primary" data-act="mock">Another mock quiz</button><button class="btn" data-act="home">Done</button>`}
+    return `<section class="card"><p class="eyebrow">Result</p><h2>${v.score} / ${v.qs.length}</h2><p class="prose">${msg}</p><div class="row">${acts}</div></section>`;
+  }
+  const q=v.qs[v.i];
+  const opts=q.opts.map(o=>{let cls="opt";if(v.answered!=null){if(o===q.correct)cls+=" right";else if(o===v.answered)cls+=" wrong"}
+    return `<button class="${cls}" data-act="answer" data-v="${esc(o)}" ${v.answered!=null?"disabled":""}><span class="ko">${esc(o)}</span></button>`}).join("");
+  return `<section class="card">
+    <div class="row" style="justify-content:space-between"><p class="eyebrow" style="margin:0">${esc(v.title)} · ${v.i+1} of ${v.qs.length}</p><button class="btn ghost small" data-act="quitquiz">Quit</button></div>
+    <div class="bar" style="margin:10px 0" aria-hidden="true"><i style="width:${v.i/v.qs.length*100}%"></i></div>
+    <div class="q">${esc(q.prompt)} ${q.big?`<span class="ko">${esc(q.big)} ${sayBtn(q.big)}</span>`:""}</div>
+    <div class="opts">${opts}</div>
+    ${v.answered!=null?`<div class="feedback">${v.answered===q.correct?'<span class="stamp">맞아요 · correct</span>':`<span class="stamp">아쉬워요 · answer: ${esc(q.correct)}</span>`}
+      <div class="row" style="margin-top:12px"><button class="btn primary" data-act="nextq">${v.i+1<v.qs.length?"Next question":"See result"}</button></div></div>`:""}
+  </section>`;
+}
+
+let rv=null; // review session
+function vReview(){
+  if(!rv){
+    const ids=dueCards().slice(0,cap());
+    if(!ids.length){
+      const learned=Object.values(S.cards).filter(c=>c.box<7).length;const known=Object.values(S.cards).filter(c=>c.box===7).length;
+      const next=Object.values(S.cards).filter(c=>c.box<7).map(c=>c.due).sort()[0];
+      return `<section class="card"><p class="eyebrow">Review</p><h2>Nothing due right now</h2>
+      <p class="muted prose">${learned?`You have ${learned} words cycling through reviews and ${known} marked as known. Next ones come back on ${next}.`:"Finish your first lesson and its words will show up here tomorrow."}</p>
+      <div class="row"><button class="btn primary" data-act="home">Go to today's lesson</button></div></section>`;
+    }
+    rv={queue:ids,i:0,flip:false,again:new Set(),seen:new Set()};
+  }
+  if(rv.i>=rv.queue.length){
+    const n=rv.seen.size;rv=null;markStudied();save();
+    return `<section class="card"><p class="eyebrow">Review finished</p><h2>${n} cards done</h2><p class="muted">That's today's memory work. Everything else is a bonus.</p>
+    <div class="row"><button class="btn primary" data-act="home">Back to today</button></div></section>`;
+  }
+  const c=cardById(rv.queue[rv.i]);
+  return `<section class="card">
+    <div class="row" style="justify-content:space-between"><p class="eyebrow" style="margin:0">Review · ${rv.i+1} of ${rv.queue.length}</p><button class="btn ghost small" data-act="endreview">Stop for today</button></div>
+    <div class="bar" style="margin:10px 0 16px" aria-hidden="true"><i style="width:${rv.i/rv.queue.length*100}%"></i></div>
+    <div class="flash" data-act="flip" role="button" tabindex="0" aria-label="Show answer">
+      <div class="big ko">${esc(c.ko)}</div>${sayBtn(c.ko)}
+      ${rv.flip?`<div class="muted">${esc(c.rom)}</div><div style="font-weight:600;font-size:1.15rem">${esc(c.en)}</div>${c.hook?`<div class="hook">${esc(c.hook)}</div>`:""}${c.zh?`<div class="zh" style="color:var(--gold);font-weight:600">漢 ${esc(c.zh)}</div>`:""}`
+        :`<div class="muted">Try to recall it, then tap to check</div>`}
+    </div>
+    ${rv.flip?`<div class="row" style="margin-top:14px;justify-content:center">
+      <button class="btn" data-act="grade" data-g="0">Forgot</button>
+      <button class="btn primary" data-act="grade" data-g="1">Got it</button>
+      <button class="btn ghost" data-act="grade" data-g="2">Too easy, never show</button></div>`:""}
+  </section>`;
+}
+
+function vExam(){
+  return `<section class="card"><p class="eyebrow">TOPIK I (Levels 1–2)</p><h2>What the paper looks like</h2>
+    <div class="tablewrap"><table><thead><tr><th>Section</th><th>Questions</th><th>Time</th><th>Points</th></tr></thead>
+    <tbody><tr><td>Listening (듣기)</td><td>30 multiple choice</td><td>40 min</td><td>100</td></tr>
+    <tr><td>Reading (읽기)</td><td>40 multiple choice</td><td>60 min</td><td>100</td></tr>
+    <tr><td><b>Total</b></td><td>70</td><td>100 min</td><td>200</td></tr></tbody></table></div>
+    <p class="prose" style="margin-top:12px"><b>Level 1</b> = 80 points or more. <b>Level 2</b> = 140 or more. There is no writing or speaking section in TOPIK I, which is why this course trains recognition (reading and listening) rather than producing sentences from scratch.</p>
+    <p class="muted" style="font-size:.88rem">Scores above are for the paper test; the internet-based test uses a different scale. Check dates and fees on the official site: <a href="https://www.topik.go.kr" target="_blank" rel="noopener">topik.go.kr</a>.</p></section>
+  <section class="card"><p class="eyebrow">Curriculum</p><h2>How the days map to the exam</h2>
+    <p class="prose">The topic order follows the beginner levels of Korea's International Standard Korean Curriculum (National Institute of Korean Language), which TOPIK I questions are written around: greetings, self-introduction, numbers and prices, time, places, shopping, food, transport, weather, hobbies, health and family. Days 1–10 cover Level 1 survival basics, Days 11–26 the Level 2 grammar core, and Day 27 the instruction words printed on the paper itself.</p></section>
+  <section class="card"><p class="eyebrow">Practice</p><h2>Mock quiz</h2>
+    <p class="muted prose">20 mixed questions drawn from the days you have finished (or all days if you have finished fewer than 3).</p>
+    <div class="row"><button class="btn primary" data-act="mock">Start mock quiz</button></div></section>
+  <section class="card"><p class="eyebrow">Reset</p><p class="muted" style="margin-top:0">Wipe all progress and start from Day 1.</p>
+    <div class="row">${view.confirmReset?`<button class="btn" style="border-color:var(--stamp);color:var(--stamp)" data-act="wipe">Yes, wipe everything</button><button class="btn ghost" data-act="cancelwipe">Cancel</button>`:`<button class="btn" data-act="askwipe">Reset progress…</button>`}</div></section>`;
+}
+
+/* ============ ACTIONS ============ */
+function finishSection(n,i){S.secs[n]=S.secs[n]||{};S.secs[n][i]=1;save()}
+function act(a,el){
+  const n=+el.dataset.n;
+  switch(a){
+    case "home":go({name:"home"});break;
+    case "review":rv=null;go({name:"review"});break;
+    case "open":go({name:"day",n,step:0,from:view.name==="day"||view.name==="quiz"?(view.from||"course"):view.name});break;
+    case "back":go({name:view.from||"course"});break;
+    case "step":go({...view,step:+el.dataset.i});break;
+    case "next":finishSection(view.n,view.step);go({...view,step:view.step+1});break;
+    case "skipsec":finishSection(view.n,view.step);toast("Section skipped");go({...view,step:view.step+1});break;
+    case "skip":{S.days[n]="skipped";save();toast(`Day ${n} skipped`);const back=view.name==="day"?(view.from||"course"):view.name;go({name:back});break}
+    case "reset":delete S.days[n];delete S.secs[n];save();render();break;
+    case "known":{const id=el.dataset.id;if(S.cards[id]&&S.cards[id].box===7)delete S.cards[id];else S.cards[id]={box:7,due:"9999-12-31"};save();render();break}
+    case "testout":{const d=dayById(n);startQuiz(wordQuestions([d],6).concat(patternQuestions([d],2)),{mode:"testout",n,title:`Test out of Day ${n}`});break}
+    case "check":{const d=dayById(n);const k=S.lazy?3:6;const pq=Math.min(2,Math.max(1,Math.floor(k/3)));
+      const qs=wordQuestions([{...d,words:lazyWords(d)}],k-pq).concat(patternQuestions([d],pq));
+      startQuiz(qs,{mode:"lesson",n,title:`Day ${n} check`,from:view.from});break}
+    case "mock":{let ds=DAYS.filter(d=>isFinished(d.n));if(ds.length<3)ds=DAYS;startQuiz(shuffle(wordQuestions(ds,14).concat(patternQuestions(ds,6))),{mode:"mock",title:"Mock quiz",from:"exam"});break}
+    case "answer":{if(view.answered!=null)return;const v=el.dataset.v;view.answered=v;const q=view.qs[view.i];if(v===q.correct)view.score++;if(q.speak&&v===q.correct)speak(q.speak);render();break}
+    case "nextq":{view.i++;view.answered=null;
+      if(view.i>=view.qs.length){
+        if(view.mode==="lesson"){S.days[view.n]="done";finishSection(view.n,3);addCards(dayById(view.n),1);markStudied();save()}
+        else if(view.mode==="testout"&&view.score>=Math.ceil(view.qs.length*.8)){S.days[view.n]="tested";addCards(dayById(view.n),3);markStudied();save()}
+      }
+      render();break}
+    case "quitquiz":go({name:view.mode==="lesson"?"day":(view.from||"home"),n:view.n,step:3,from:view.from});break;
+    case "flip":if(!rv.flip){rv.flip=true;render()}break;
+    case "grade":{const id=rv.queue[rv.i];const c=S.cards[id];const g=+el.dataset.g;const t=today();
+      rv.seen.add(id);
+      if(g===0){c.box=1;c.due=addDays(t,1);if(!rv.again.has(id)){rv.again.add(id);rv.queue.push(id)}}
+      else if(g===1){if(!rv.again.has(id)){c.box=Math.min(6,c.box+1);c.due=addDays(t,INTERVALS[c.box])}}
+      else {c.box=7;c.due="9999-12-31"}
+      rv.i++;rv.flip=false;save();render();break}
+    case "endreview":rv.i=rv.queue.length;render();break;
+    case "askwipe":view.confirmReset=true;render();break;
+    case "cancelwipe":view.confirmReset=false;render();break;
+    case "wipe":S=blank();save();rv=null;toast("Progress reset");go({name:"home"});break;
+  }
+}
+document.addEventListener("click",e=>{
+  const say=e.target.closest("[data-say]");if(say){e.stopPropagation();speak(say.dataset.say);return}
+  const nav=e.target.closest("[data-go]");if(nav){rv=null;go({name:nav.dataset.go});return}
+  const el=e.target.closest("[data-act]");if(el)act(el.dataset.act,el);
+});
+document.addEventListener("keydown",e=>{
+  if((e.key==="Enter"||e.key===" ")&&e.target.matches(".flash")){e.preventDefault();act("flip",e.target)}
+});
+document.addEventListener("change",e=>{if(e.target.id==="lazy"){S.lazy=e.target.checked;save();render();toast(S.lazy?"Lazy mode on":"Lazy mode off")}});
+if("speechSynthesis" in window){try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>{}}catch(e){}}
+render();
+</script>
+</body>
+</html>
